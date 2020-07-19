@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Model\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -14,7 +15,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $product= Product::all();
+        return $product;
     }
 
     /**
@@ -35,7 +37,10 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|unique:products|max:255',
+        ]);
+        product::create($request->all());
     }
 
     /**
@@ -46,7 +51,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return $product;
     }
 
     /**
@@ -69,7 +74,11 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $product->name =$request->name;
+        $product->detail =$request->detail;
+        $product->price=$request->price;
+        $product->stock=$request->stock;
+        $product->save();
     }
 
     /**
@@ -78,8 +87,8 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy( Product $product)
     {
-        //
+        $product->delete();
     }
 }
