@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Model\Review;
 use Illuminate\Http\Request;
-
+use App\Http\Resources\Product\ProductReviewCollection;
 class ReviewController extends Controller
 {
     /**
@@ -22,9 +22,10 @@ class ReviewController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function productReview($id)
     {
-        //
+        $reviews = Review::where('product_id', $id)->get();
+        return ProductReviewCollection::collection($reviews);
     }
 
     /**
@@ -46,7 +47,7 @@ class ReviewController extends Controller
      */
     public function show(Review $review)
     {
-        //
+        return $review;
     }
 
     /**
