@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Model\Product;
 use Illuminate\Http\Request;
+use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -51,7 +52,8 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return $product;
+        // return $product;
+        return new ProductResource($product); //data will push to product resource
     }
 
     /**
@@ -74,6 +76,9 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        $validatedData = $request->validate([
+            'name' => 'required|unique:products|max:255',
+        ]);
         $product->name =$request->name;
         $product->detail =$request->detail;
         $product->price=$request->price;
